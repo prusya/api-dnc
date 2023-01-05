@@ -30,11 +30,13 @@ func (s *Service) Sort(arr []int) ([]int, error) {
 		urlLeft := fmt.Sprintf("%s?arr=%s", config.MergesortUrl, arrLeft)
 		respLeft, err := http.Get(urlLeft)
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 		defer respLeft.Body.Close()
 		err = json.NewDecoder(respLeft.Body).Decode(&left)
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 
@@ -45,23 +47,30 @@ func (s *Service) Sort(arr []int) ([]int, error) {
 		urlRight := fmt.Sprintf("%s?arr=%s", config.MergesortUrl, arrRight)
 		respRight, err := http.Get(urlRight)
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 		defer respRight.Body.Close()
-		err = json.NewDecoder(respLeft.Body).Decode(&right)
+		err = json.NewDecoder(respRight.Body).Decode(&right)
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 	} else {
 		left, err = s.Sort(arr[:len(arr)/2])
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 		right, err = s.Sort(arr[len(arr)/2:])
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 	}
+
+	// fmt.Println("left", left)
+	// fmt.Println("right", right)
 
 	return merge(left, right), nil
 }

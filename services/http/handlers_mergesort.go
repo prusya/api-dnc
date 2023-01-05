@@ -16,9 +16,12 @@ func getMergesort(c *gin.Context) {
 	args := strings.Split(arg, ",")
 	arr := []int{}
 	for i := 0; i < len(args); i++ {
+		if args[i] == "" {
+			continue
+		}
 		n, err := strconv.Atoi(args[i])
 		if err != nil {
-			c.JSON(http.StatusBadRequest, "w")
+			c.JSON(http.StatusBadRequest, err)
 			return
 		}
 		arr = append(arr, n)
@@ -26,7 +29,7 @@ func getMergesort(c *gin.Context) {
 	fmt.Println(arr)
 	sorted, err := services.Mergesort.Sort(arr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, "w")
+		c.JSON(http.StatusBadRequest, err)
 		return
 	}
 	c.JSON(http.StatusOK, sorted)
