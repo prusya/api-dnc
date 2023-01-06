@@ -1,6 +1,10 @@
 package http
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Service struct {
 	router *gin.Engine
@@ -17,7 +21,10 @@ func New() *Service {
 }
 
 func (s *Service) Start() {
-	s.router.Run()
+	err := s.router.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 func (s *Service) Stop() {
