@@ -6,7 +6,9 @@ var (
 )
 
 type MergesortService interface {
-	Sort([]int) ([]int, error)
+	DistributedSort([]int) ([]int, error)
+	JobQueueSort([]int) (string, error)
+	JobQueueSortResults(string) ([]int, error)
 }
 
 type HttpService interface {

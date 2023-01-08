@@ -28,7 +28,7 @@ func getMergesort(c *gin.Context) {
 	}
 
 	fmt.Println(arr)
-	sorted, err := services.Mergesort.Sort(arr)
+	sorted, err := services.Mergesort.DistributedSort(arr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 		return

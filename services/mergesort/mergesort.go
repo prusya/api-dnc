@@ -15,7 +15,7 @@ func New() *Service {
 	return &Service{}
 }
 
-func (s *Service) Sort(arr []int) ([]int, error) {
+func (s *Service) DistributedSort(arr []int) ([]int, error) {
 	if len(arr) < 2 {
 		return arr, nil
 	}
@@ -57,12 +57,12 @@ func (s *Service) Sort(arr []int) ([]int, error) {
 			return nil, err
 		}
 	} else {
-		left, err = s.Sort(arr[:len(arr)/2])
+		left, err = s.DistributedSort(arr[:len(arr)/2])
 		if err != nil {
 			fmt.Println(err)
 			return nil, err
 		}
-		right, err = s.Sort(arr[len(arr)/2:])
+		right, err = s.DistributedSort(arr[len(arr)/2:])
 		if err != nil {
 			fmt.Println(err)
 			return nil, err
@@ -98,4 +98,12 @@ func merge(a, b []int) []int {
 	}
 
 	return out
+}
+
+func (s *Service) JobQueueSort(arr []int) (string, error) {
+	return "", nil
+}
+
+func (s *Service) JobQueueSortResults(jobID string) ([]int, error) {
+	return []int{}, nil
 }

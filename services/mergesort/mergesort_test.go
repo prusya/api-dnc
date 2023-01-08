@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestService_Sort(t *testing.T) {
+func TestService_DistributedSort(t *testing.T) {
 	type args struct {
 		arr []int
 	}
@@ -22,7 +22,7 @@ func TestService_Sort(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.s.Sort(tt.args.arr)
+			got, err := tt.s.DistributedSort(tt.args.arr)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Service.Sort() error = %v, wantErr %v", err, tt.wantErr)
 				return
