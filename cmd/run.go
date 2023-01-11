@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/prusya/api-dnc/services"
 	"github.com/prusya/api-dnc/services/http"
@@ -22,6 +23,13 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("run called")
+
+		hostname, err := os.Hostname()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Println("Hostname:", hostname)
 
 		services.Mergesort = mergesort.New()
 		services.Http = http.New()

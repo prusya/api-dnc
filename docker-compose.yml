@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  dnc:
+    build: .
+
+networks: 
+  default: 
+    name: shared
