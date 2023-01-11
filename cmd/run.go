@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/prusya/api-dnc/config"
 	"github.com/prusya/api-dnc/services"
 	"github.com/prusya/api-dnc/services/http"
 	"github.com/prusya/api-dnc/services/mergesort"
@@ -30,6 +31,8 @@ to quickly create a Cobra application.`,
 			os.Exit(1)
 		}
 		fmt.Println("Hostname:", hostname)
+		fmt.Println("HTTP_PORT:", config.HttpPort)
+		fmt.Println("MERGESORT_URL:", config.MergesortUrl)
 
 		services.Mergesort = mergesort.New()
 		services.Http = http.New()
