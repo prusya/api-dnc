@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/prusya/api-dnc/config"
+	"github.com/prusya/api-dnc/models"
 )
 
 type Service struct{}
@@ -15,9 +17,20 @@ func New() *Service {
 	return &Service{}
 }
 
-func (s *Service) DistributedSort(arr []int) ([]int, error) {
+func (s *Service) DistributedSort(arr []int) (*models.MergesortResult, error) {
+	hostname, err := os.Hostname()
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
 	if len(arr) < 2 {
-		return arr, nil
+		out := models.MergesortResult{
+			Host:    hostname,
+			Result:  arr,
+			Request: arr,
+		}
+		return &out, nil
 	}
 
 	left, err := s.distributedSort(arr[:len(arr)/2])
@@ -31,7 +44,15 @@ func (s *Service) DistributedSort(arr []int) ([]int, error) {
 		return nil, err
 	}
 
-	return merge(left, right), nil
+	res := merge(left.Result, right.Result)
+	out := models.MergesortResult{
+		Host:       hostname,
+		Result:     res,
+		Request:    arr,
+		SubResults: []*models.MergesortResult{left, right},
+	}
+
+	return &out, nil
 }
 
 func merge(a, b []int) []int {
@@ -67,8 +88,8 @@ func (s *Service) JobQueueSortResults(jobID string) ([]int, error) {
 	return []int{}, nil
 }
 
-func (s *Service) distributedSort(arr []int) ([]int, error) {
-	var out []int
+func (s *Service) distributedSort(arr []int) (*models.MergesortResult, error) {
+	var out *models.MergesortResult
 	var err error
 
 	if config.MergesortUrl != "" {
