@@ -5,30 +5,24 @@ import (
 	"testing"
 )
 
-func TestService_DistributedSort(t *testing.T) {
+func Test_merge(t *testing.T) {
 	type args struct {
-		arr []int
+		a []int
+		b []int
 	}
-	s := New()
 	tests := []struct {
-		name    string
-		s       *Service
-		args    args
-		want    []int
-		wantErr bool
+		name string
+		args args
+		want []int
 	}{
-		{"3 1 2", s, args{[]int{3, 1, 2}}, []int{1, 2, 3}, false},
-		{"empty", s, args{[]int{}}, []int{}, false},
+		{"2; 1", args{[]int{2}, []int{1}}, []int{1, 2}},
+		{"2,3; 1", args{[]int{2, 3}, []int{1}}, []int{1, 2, 3}},
+		{"2; 1,3", args{[]int{2}, []int{1, 3}}, []int{1, 2, 3}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.s.DistributedSort(tt.args.arr)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("Service.Sort() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Service.Sort() = %v, want %v", got, tt.want)
+			if got := merge(tt.args.a, tt.args.b); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("merge() = %v, want %v", got, tt.want)
 			}
 		})
 	}
